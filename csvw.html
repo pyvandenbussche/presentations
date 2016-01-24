@@ -47,50 +47,96 @@
 				<section>
 					<h1>CSVW</h1>
 					<h3>CSV, on, the, Web</h3>
-					<p>
-						<small>Presented by <a href="http://hakim.se">Pierre-Yves Vandenbussche</a> 2016-01-22</small>
-					</p>
+					<div>
+						<small>Presented by <a href="http://pyvandenbussche.info/">Pierre-Yves Vandenbussche</a> 2016-01-22</small>
+					</div>
 				</section>
 
 				<section>
-					<h2>The Web and CSV</h2>
-          <p>CSV is one of the <em>most prominent</em> format for data sharing on the Web.
-          </p>
-          <div>
-            <ul>
-                <li>CSV = Tabular data</li>
-                <li>CSV => Most present format</li>
-              </ul>
-          </div>
-          <div class='column' style="float:left; width: 33%; height:350px;">
-            <p><a href="https://data.gov/data/" target="_blank">data.gov (USA)</a></p>
-            <div id="chart_datagovus" class="scalechart nvchart" style="width: 100%; height:100%">
-              <svg></svg>
-            </div>
-          </div>
-          <div class='column' style="float:left; width: 33%; height:350px;">
-            <p><a href="https://data.gov.uk/data/" target="_blank">data.gov.uk (UK)</a></p>
-            <div id="chart_datagovuk" class="scalechart nvchart" style="width: 100%; height:100%">
-              <svg></svg>
-              
-            </div>
-          </div>
-          <div class='column' style="float:left; width: 33%; height:350px;">
-            <div id="chart_datagouvfr" class="scalechart nvchart" style="width: 100%; height:100%">
-              <p><a href="https://www.data.gouv.fr/fr/datasets/" target="_blank">data.gouv.fr (FR)</a></p>
-              <svg></svg>
-            </div>
-          </div>
-          
-          <div style="clear:both;">
-            <h3>Goal of CSV on the Web</h3>
-          </div>
-        </section>
+					<h3>The Web and CSV</h3>
+					<p class="alignleft">"CSV is one of the most <em>popular formats</em> for publishing data on the web. It is concise, easy to understand by both humans and computers, and aligns nicely to the <em>tabular nature</em> of most data." <small><a href="http://w3c.github.io/csvw/primer/" target="_blank">[1]</a></small>
+					</p>
+					<div style="height:8em; margin-bottom:2em">
+					  <div class='column' style="float:left; width: 33%; height:100%;">
+						<p><a href="https://data.gov/data/" target="_blank">data.gov (USA)</a></p>
+						<div id="chart_datagovus" class="scalechart nvchart" style="width: 100%; height:100%">
+						  <svg></svg>
+						</div>
+					  </div>
+					  <div class='column' style="float:left; width: 33%; height:100%;">
+						<p><a href="https://data.gov.uk/data/" target="_blank">data.gov.uk (UK)</a></p>
+						<div id="chart_datagovuk" class="scalechart nvchart" style="width: 100%; height:100%">
+						  <svg></svg>
+						  
+						</div>
+					  </div>
+					  <div class='column' style="float:left; width: 33%; height:100%;">
+						<div id="chart_datagouvfr" class="scalechart nvchart" style="width: 100%; height:100%">
+						  <p><a href="https://www.data.gouv.fr/fr/datasets/" target="_blank">data.gouv.fr (FR)</a></p>
+						  <svg></svg>
+						</div>
+					  </div>
+					</div>
+					
+				</section>
+				<section>
+					<h3>Tabular Data and CSV</h3>
+					<div class="alignleft">
+						<ul>
+							<li><em>Tabular data</em> is structured into rows</li>
+							<li>Rows are divided into the same number of cells corresponding to the columns</li>
+						</ul>
+					</div>
+				  <div class='column' style="float:left; width: 55%">
+					<pre><code>
+"country","country group","name (en)"
+"at","eu","Austria"
+"be","eu","Belgium"
+					</code></pre>
+					</div>
+					<div class='column' style="float:right; width: 45%">
+					<small>
+					<table class='rightAlign reveal'>
+						<tr style="border-bottom: 3px">
+						  <th>country code</th>
+						  <th>country group</th>
+						  <th>name (en)</th>
+						</tr>
+						<tr>
+						  <td>at</td>
+						  <td>eu</td>
+						  <td>Austria</td>
+						</tr>
+						<tr>
+						  <td>be</td>
+						  <td>eu</td>
+						  <td>Belgium</td>
+						</tr>
+					</table>
+					</small>
+					</div>
+					<div class="alignleft">
+						<ul>
+							<li>In <em>CSV</em>, a <em>separator character</em> is used to delimit cells (comma, semicolon, tab)</li>
+							<li>The <em>header row</em> can be used to define columns titles</li>
+						</ul>
+					<p class="alignleft"><em>Tradeoff simplicity/expressivity</em>: CSV model does not allow schema information such as type, value range, datatype, language, etc.</p>
+					</div>
+				</section>
 
 				<section>
-					<h2>Overall Idea</h2>
-          <p>Metadata about columns, rows, cells</p>
-        </section>
+					<h2>CSVW</h2>
+					<div class="alignleft">
+						<ul>
+							<li>W3C CSV on the Web <a href="https://www.w3.org/2013/csvw" target="_blank">Working Group</a></li>
+							<li>Recommendations published on the <em>17 December 2015</em></li>
+							<li>Covers comma/semicolon/tab-delimited files as well as fixed field formats, spreadsheets, HTML tables, and SQL dumps as <em>tabular data files</em></li>
+							<li>Defines a <a href="http://www.w3.org/TR/tabular-metadata/" target="_blank">metadata vocabulary for tabular data</a></em></li>
+							<li>Specifes a <a href="http://www.w3.org/TR/tabular-data-model/" target="_blank">model for tabular data and metadata</a> along with the way to publish it on the Web</em></li>
+							<li>Transformations <a href="http://www.w3.org/TR/csv2json/" target="_blank">CSV2JSON</a> and <a href="http://www.w3.org/TR/csv2rdf/" target="_blank">CSV2RDF</a> are defined</li>
+						</ul>
+					</div>
+				</section>
         
         <section>
 					<h2>Metadata Location</h2>
