@@ -171,7 +171,7 @@
                                 -->
       <section>
         <h3>W3C Working Group - <a href="https://www.w3.org/2013/csvw" target="_blank">CSV on the Web</a></h3>
-        <img src="img/W3C.png" style="height:100px;">
+        <img src="img/W3C.png" style="height:100px;" class="deco">
         <p  class="alignleft font90">"Provide <em>higher interoperability</em> when working with datasets using the CSV (Comma-Separated Values) or similar formats" <small><a href="https://www.w3.org/2013/csvw/wiki/Main_Page" target="_blank">[2]</a></small></p>
         <p  class="alignleft font90">Recommendations published on the <em>17 December 2015</em></p>
        	<ul class="font90">
@@ -187,30 +187,178 @@
                                 ########################### 
                                 -->      
       <section class="stack present">
-        
           <section class="present">
-        <h2>Metadata Location</h2>
-        <div class="alignleft font90">
-          <p>4 methods:</p>
-          <ul>
-            <li>sd</li>
-          </ul>
-      </section>
+        <h3>Metadata Location</h3>
+        <div class="alignleft">
+          <p class="font90"><em>4 methods:</em></p>
+          <ol class="font90">
+			<li>Link header</li>
+			<li>Default locations</li>
+			<li>Embedded metadata</li>
+			<li>Overriding metadata</li>
+          </ol>
+		</div>
+		<br/>
+		<a href="#" class="navigate-down enabled">&#8615;</a>
+      </section><!-- 
+                                ###########################
+                                        1. Link Header
+                                ########################### 
+                                --> 
       <section class="future">
-        <h2>Metadata Location</h2>
+        <h3>Link header</h3>
         <div class="alignleft font90">
-          <p>4 methods:</p>
-          <ul>
-            <li>sd</li>
-          </ul>
+			<p>The <a href="https://www.w3.org/wiki/LinkHeader" target="_blank">'link' header in HTTP</a> allows the server to point an interested client to another resource <em>containing metadata</em> about the requested resource without actually touching it</p>
+		</div>
+		<div>
+			<p class="font70 example">Example of a CSV(tab-separated) file header pointing its metadata resource:</p>
+		</div>
+			<pre><code style="padding-left:20px;" class="http">
+HTTP/1.1 200 OK
+Content-Type: text/tab-separated-values
+...
+Link: &lt;metadata.json>; rel="describedBy"; type="application/csvm+json"
+				</code></pre>
+		<div class="alignleft font90">
+			<p><span class="code">metadata.json</span> contains the metadata for processing the CSV file</p>
+		</div>
+      </section><!-- 
+                                ###########################
+                                        Default Location
+                                ########################### 
+                                --> 
+	  <section class="future">
+        <h3>Default locations</h3>
+		<div class="alignleft font85">
+			<p>Considering the file <em><span class="code">http://example.org/africa/countries.csv</span></em>, the default locations are:</p>
+		</div>
+        <div class="alignleft">
+			<ul class="font80">
+				<li>The well-known URI <em><span class="code">/.well-known/csvm</span></em> describing the template to access metadata files</li>
+			</ul>
+			<pre><code style="padding:0 0 0 20px;" class="html">
+http://example.org/.well-known/csvm
+			</code></pre>
+			<ul class="font80">
+				<li>Expand the file URI template with <em><span class="code">-metadata.json</span></em></li>
+			</ul>
+			<pre><code style="padding:0 0 0 20px;" class="html">
+http://example.org/africa/countries.csv-metadata.json
+			</code></pre>
+			<ul class="font80">
+				<li>Default metadata file name <em><span class="code">csv-metadata.json</span></em></li>
+			</ul>
+			<pre><code style="padding:0 0 0 20px;" class="html">
+http://example.org/africa/csv-metadata.json
+			</code></pre>
+				
+			
+		</div>
+      </section><!-- 
+                                ###########################
+                                       Embedded metadata
+                                ########################### 
+                                --> 
+	  <section class="future">
+        <h3>Embedded metadata</h3>
+        <div class="alignleft font90">
+			CSV specification only allows the first row to be a <em>header containing the column titles </em>
+		</div>
+		<br/>
+		<div class="alignleft font90">
+			<p>Specific parsers could agree on comments using a <span class="code">#</span> embedding metadata</em> <span class="warning">This is not natively supported by the CSV specification</span></p>
+			<pre><code style="padding:0 0 0 20px;" class="html">
+# publisher ISO
+# updated 2012-04-19
+#name country latitude longitude name(en)
+#datatype string  float  float  string 
+AD	42.546245	1.601554	Andorra.
+AE	23.424076	53.847818	United Arab Emirates.
+			</code></pre>
+		</div>
+      </section><!-- 
+                                ###########################
+                                       Overriding metadata
+                                ########################### 
+                                --> 
+	  <section class="future">
+        <h3>Overriding metadata</h3>
+        <div class="alignleft font90">
+			<p>Metadata information or file location is specified by the user <em>through a program</em></p>
+			<div>
+				<p class="font70 example">A processor might be invoked with parameters:</p>
+			</div>
+			<pre><code style="padding-left:20px;">
+$ csvlint data.csv --datatypes:string,float,string,string
+$ csvlint data.csv --schema:schema.json
+				</code></pre>
+			<p>This method <em>supersede</em> all the previous one</p>
+		</div>
       </section>
-          
-      </section>
+      </section><!-- 
+                                ###########################
+                                       Metadata Syntax
+                                ########################### 
+                                --> 
+	  <section>
+        <h3>Metadata syntax</h3>
+        <div class="alignleft font90">
+			<p>Similar to JSON-LD</p>
+			<pre><code style="padding-left:20px;" class="json">
+{
+  "@context": ["http://www.w3.org/ns/csvw", {"@language": "en"}],
+  "@type": "Table",
+  "url": "http://example.org/africa/countries.csv",
+  "dc:modified": {"@value": "2010-12-31", "@type": "xsd:date"},
+  "dcat:keyword": ["tree", "street", "maintenance"],
+  "dc:publisher": {
+    "schema:name": "Example Municipality",
+    "schema:url": {"@id": "http://example.org"}
+  },
+  "tableSchema": {
+    "columns": [{
+      "name": "country",
+      "titles": "Country",
+      "datatype": "string",
+      "required": true
+    }, {
+      "name": "latitude",
+      "titles": "Latitude",
+      "datatype": "float"
+    }, {
+      "name": "longitude",
+      "titles": "Longitude",
+      "datatype": "float"
+    }, {
+      "name": "name(en)",
+      "titles": "name",
+      "datatype": "string"
+    }, {
+      "name": "inventory_date",
+      "titles": "Inventory Date",
+      "datatype": {
+        "base": "date",
+        "format": "M/d/yyyy"
+      }
+    }],
+    "primaryKey": "countryID",
+    "aboutUrl": "#Country-{country}"
+  }
+}
+				</code></pre>
+		</div>
+      </section><!-- 
+                                ###########################
+                                       References
+                                ########################### 
+                                -->
       <section>
         <h2>References</h2>
-        <p>https://www.w3.org/2013/05/lcsv-charter</p>
-        <p>https://www.w3.org/2013/csvw/wiki/Main_Page</p>
-        <p>https://www.w3.org/TR/2015/REC-tabular-data-model-20151217/</p>
+		<div class="alignleft font90">
+			<p>https://www.w3.org/2013/05/lcsv-charter</p>
+			<p>https://www.w3.org/2013/csvw/wiki/Main_Page</p>
+			<p>https://www.w3.org/TR/2015/REC-tabular-data-model-20151217/</p>
+		</div>
       </section>
     </div>
   </div>

@@ -11,7 +11,10 @@
 /*********************************************
  * Customisation
  *********************************************/
-.reveal .font80 {
+.reveal .font70 {
+	font-size: 70%;
+}
+ .reveal .font80 {
 	font-size: 80%;
 }
 .reveal .font85 {
@@ -64,6 +67,14 @@
 .reveal .footnote{
   font-size: 0.3em;
   color:#d9d9d9;
+}
+
+.reveal .code{
+	font-family: monospace;
+}
+
+.reveal .example{
+	color:#d9d9d9;
 }
 
 /*********************************************
@@ -302,7 +313,7 @@ body {
 /*********************************************
  * IMAGES
  *********************************************/
-.reveal section img {
+.reveal section img.deco {
   margin: 10px 0px;
   background: rgba(255, 255, 255, 0.80);
   border: 4px solid #eee;
@@ -312,12 +323,12 @@ body {
   border: 0;
   box-shadow: none; }
 
-.reveal a img {
+.reveal a img.deco {
   -webkit-transition: all 0.15s linear;
   -moz-transition: all 0.15s linear;
   transition: all 0.15s linear; }
 
-.reveal a:hover img {
+.reveal a:hover img.deco {
   background: rgba(255, 255, 255, 0.2);
   border-color: #13DAEC;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.55); }
