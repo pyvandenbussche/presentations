@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="css/nv.d3.css" type="text/css">
   <script src="js/d3.js">
   </script><!-- Used to display charts -->
+  <script src="plugin/fullscreen/screenfull.min.js"></script>
 
   <script src="js/nv.d3.js">
   </script><!-- Overlayer make charts dynamic. -->
@@ -561,6 +562,7 @@ $ csvlint data.csv --schema:schema.json
                                         { src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
                                         { src: 'plugin/zoom-js/zoom.js', async: true },
                                         { src: 'plugin/notes/notes.js', async: true },
+                                        { src: 'plugin/title-footer/title-footer.js', async: true, callback: function() { title_footer.initialize(); }  },
           { src: 'plugin/math/math.js', async: true }
                                 ]
                         });
