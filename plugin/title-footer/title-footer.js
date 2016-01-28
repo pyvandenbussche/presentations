@@ -5,7 +5,9 @@
 * Author: Igor Leturia                                  *
 *                                                       *
 * License: GPL v3                                       *
-* http://www.gnu.org/copyleft/gpl.html        *
+* http://www.gnu.org/copyleft/gpl.html                  *
+* Update by Pierre-Yves Vandenbussche to add a          *
+* fullscreen icon                                       *
 *                                                       *
 ********************************************************/
 
