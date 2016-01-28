@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>CSVW - CSV on the Web</title>
-  <meta name="description" content="Add semantics to tabular data on the Web">
+  <meta name="description" content="Add semantics to CSV tabular data on the Web">
   <meta name="author" content="Pierre-Yves Vandenbussche">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -13,20 +13,22 @@
   <link rel="stylesheet" href="css/math.css">
   <link rel="stylesheet" href="css/nv.d3.css" type="text/css">
   <script src="js/d3.js">
-  </script>
+  </script><!-- Used to display charts -->
+
   <script src="js/nv.d3.js">
-  </script><!-- Code syntax highlighting kimbie.light|railscasts|zenburn -->
-  <link rel="stylesheet" href="lib/css/kimbie.light.css"><!-- Printing and PDF exports -->
+  </script><!-- Overlayer make charts dynamic. -->
+  <link rel="stylesheet" href="lib/css/kimbie.light.css"><!-- Code syntax highlighting kimbie.light|railscasts|zenburn -->
 
   <script>
-                        var link = document.createElement( 'link' );
-                        link.rel = 'stylesheet';
-                        link.type = 'text/css';
-                        link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-                        document.getElementsByTagName( 'head' )[0].appendChild( link );
-  </script><!--[if lt IE 9]>
-                <script src="lib/js/html5shiv.js"></script>
-                <![endif]-->
+            var link = document.createElement( 'link' );
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+            document.getElementsByTagName( 'head' )[0].appendChild( link );
+  </script><!-- print feature -->
+  <!--[if lt IE 9]>
+        <script src="lib/js/html5shiv.js"></script>
+        <![endif]-->
 </head>
 <body>
   <div class="reveal">
@@ -39,9 +41,15 @@
                                 -->
       <section>
         <h1>CSVW</h1>
-        <h3>CSV, on, the, Web</h3>
-        <div>
-          <small>Presented by <a href="http://pyvandenbussche.info/">Pierre-Yves Vandenbussche</a> 2016-01-22</small>
+        <h3>CSV, on, the, Web</h3><br>
+        <div class="column" style="float:left;">
+          <small><a href="http://pyvandenbussche.info/" target="_blank">Pierre-Yves Vandenbussche</a></small>
+        </div>
+        <div class="column example" style="float:right;">
+          <small>last modified 2016-01-28</small>
+        </div>
+        <div class="alignleft" style="clear:both">
+          <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank"><img alt="Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License" style="border-width:0" src="img/cc_by-nc-sa_4.0.png"></a>
         </div>
       </section><!-- 
                                 ###############################
@@ -50,7 +58,7 @@
                                 -->
       <section>
         <h3>The Web and CSV</h3>
-        <p class="alignleft font90">"CSV is one of the most <em>popular formats</em> for publishing data on the web. It is <em>concise, easy</em> to understand by both humans and computers, and aligns nicely to the <em>tabular nature</em> of most data." <small><a href="http://w3c.github.io/csvw/primer/" target="_blank">[1]</a></small></p>
+        <p class="alignleft font90">"CSV is one of the most <em>popular formats</em> for publishing data on the web. It is <em>concise, easy</em> to understand by both humans and computers, and aligns nicely to the <em>tabular nature</em> of most data." <small><a href="http://w3c.github.io/csvw/primer/" target="_blank">[ref]</a></small></p>
         <div style="height:8em; margin-bottom:2em">
           <div class='column' style="float:left; width: 33%; height:100%;">
             <p class="small"><a href="https://data.gov/data/" target="_blank">data.gov (USA)</a></p>
@@ -70,7 +78,7 @@
             </div>
           </div>
         </div>
-        <p class="alignleft footnote">Data gathered on 2016-01-22 from the respective data repositories</p>
+        <p class="alignleft footnote">Data gathered on 2016-01-28 from the respective data catalogues.</p>
       </section><!-- 
                                 #######################
                                         CSV Model
@@ -79,7 +87,7 @@
       <section>
         <h3>A simple model</h3>
         <div class="alignleft">
-          <p>Common <em>tabular model</em>:</p>
+          <p><em>Tabular model</em>:</p>
         </div>
         <div class='column' style="float:left; width: 55%">
           <ul class="font80">
@@ -102,45 +110,47 @@
           </table>
         </div>
         <div class="clear alignleft">
-          <p class="info font85">=&gt; Can be applied to all tabular data not only CSV</p>
+          <p class="info font85">=&gt; Common to all tabular data, not only CSV</p>
         </div>
-        <div class="alignleft">
-          <p>CSV (loose definition):</p>
-        </div>
-        <div class="alignleft">
-          <ul class="font80">
-            <li>A <em>separator character</em> is used to delimit cells (comma, semicolon, tab)</li>
-            <li>The <em>header row</em> can be used to define columns titles</li>
-          </ul>
-        </div>
-        <div class='column' style="float:left; width: 52%">
-          <pre><code>
-  "country","country group","name (en)"
+        <div class="fragment">
+          <div class="alignleft">
+            <p>CSV (loose definition):</p>
+          </div>
+          <div class="alignleft">
+            <ul class="font80">
+              <li>A <em>separator character</em> is used to delimit cells (comma, semicolon, tab)</li>
+              <li>The <em>header row</em> can be used to define columns titles</li>
+            </ul>
+          </div>
+          <div class='column' style="float:left; width: 52%">
+            <pre><code>
+  "countryCode","countryGroup","name"
   "at","eu","Austria"
   "be","eu","Belgium"
           </code></pre>
-        </div>
-        <div class='column' style="float:left; width: 5%">
-          ↔
-        </div>
-        <div class='column' style="float:right; width: 40%">
-          <table class='rightAlign reveal small'>
-            <tr style="border-bottom: 3px">
-              <th>country code</th>
-              <th>country group</th>
-              <th>name (en)</th>
-            </tr>
-            <tr>
-              <td>at</td>
-              <td>eu</td>
-              <td>Austria</td>
-            </tr>
-            <tr>
-              <td>be</td>
-              <td>eu</td>
-              <td>Belgium</td>
-            </tr>
-          </table>
+          </div>
+          <div class='column' style="float:left; width: 5%;">
+            ↔
+          </div>
+          <div class='column' style="float:right; width: 40%">
+            <table class='rightAlign reveal small'>
+              <tr style="border-bottom: 3px">
+                <th>countryCode</th>
+                <th>countryGroup</th>
+                <th>name</th>
+              </tr>
+              <tr>
+                <td>at</td>
+                <td>eu</td>
+                <td>Austria</td>
+              </tr>
+              <tr>
+                <td>be</td>
+                <td>eu</td>
+                <td>Belgium</td>
+              </tr>
+            </table>
+          </div>
         </div>
       </section><!-- 
                                 #######################
@@ -151,7 +161,6 @@
         <h3>Too simple in some cases...</h3>
         <div class="alignleft font80">
           <p><em>Easy to import/export</em> from/to other tabular data: spreadsheet, HTML table, Relational DB but...</p>
-          <p><em>Not expressive enough</em> to capture metadata information such as type, value range, datatype, language, etc. (except columns label in header) <span class="warning">May result in data loss</span></p>
         </div>
         <div class="alignleft font80" style="margin: 0 2em;">
           <p class="font80">When shall you send a postcard to a contact with birth date: "1978-07-06"?</p>
@@ -161,7 +170,10 @@
             <li>c) both dates to be sure!</li>
           </ul>
         </div>
-        <div class="alignleft font80">
+        <div class="fragment alignleft font80">
+          <p><em>Not expressive enough</em> to capture metadata information such as type, value range, datatype, language, etc. (except columns label in header) <span class="warning">May result in data loss</span></p>
+        </div>
+        <div class="fragment alignleft font80">
           <p><em>=&gt; Need for a mean to encode and associate relevant metadata</em></p>
         </div>
       </section><!-- 
@@ -171,11 +183,12 @@
                                 -->
       <section>
         <h3>W3C Working Group - <a href="https://www.w3.org/2013/csvw" target="_blank">CSV on the Web</a></h3><img src="img/W3C.png" style="height:100px;" class="deco">
-        <p class="alignleft font90">"Provide <em>higher interoperability</em> when working with datasets using the CSV (Comma-Separated Values) or similar formats" <small><a href="https://www.w3.org/2013/csvw/wiki/Main_Page" target="_blank">[2]</a></small></p>
-        <p class="alignleft font90">Recommendations published on the <em>17 December 2015</em></p>
+        <p class="alignleft font90">"Provide <em>higher interoperability</em> when working with datasets using the CSV (Comma-Separated Values) or similar formats" <small><a href="https://www.w3.org/2013/csvw/wiki/Main_Page" target="_blank">[ref]</a></small></p>
+        <div class="fragment alignleft font90">
+        <p>Recommendations published on the <em>17 December 2015</em></p>
         <ul class="font90">
           <li>
-            <a href="http://www.w3.org/TR/tabular-metadata/" target="_blank">Metadata vocabulary for tabular data</a> (will be commonnly used by any tabular data such as HTML tables)
+            <a href="http://www.w3.org/TR/tabular-metadata/" target="_blank">Metadata vocabulary for tabular data</a> (will be commonly used by any tabular data such as HTML tables)
           </li>
           <li>
             <a href="http://www.w3.org/TR/tabular-data-model/" target="_blank">Model for tabular data and metadata</a> along with the way to publish it on the Web
@@ -183,6 +196,7 @@
           <li>Transformations <a href="http://www.w3.org/TR/csv2json/" target="_blank">CSV2JSON</a> and <a href="http://www.w3.org/TR/csv2rdf/" target="_blank">CSV2RDF</a>
           </li>
         </ul>
+        </div>
       </section><!-- 
                                 ###########################
                                         Locating Metadata
@@ -192,7 +206,7 @@
         <section class="present">
           <h3>Metadata Location</h3>
           <div class="alignleft">
-            <p class="font90"><em>4 methods:</em></p>
+            <p class="font90"><em>4 methods</em> are defined to publish/locate CSV metadata:</p>
             <ol class="font90">
               <li>Link header</li>
               <li>Default locations</li>
@@ -211,17 +225,14 @@
           <div class="alignleft font90">
             <p>The <a href="https://www.w3.org/wiki/LinkHeader" target="_blank">'link' header in HTTP</a> allows the server to point an interested client to another resource <em>containing metadata</em> about the requested resource without actually touching it</p>
           </div>
-          <div>
-            <p class="font70 example">Example of a CSV(tab-separated) file header pointing its metadata resource:</p>
-          </div>
           <pre><code style="padding-left:20px;" class="http">
 HTTP/1.1 200 OK
 Content-Type: text/tab-separated-values
 ...
 Link: &lt;metadata.json&gt;; rel="describedBy"; type="application/csvm+json"
-                                </code></pre>
-          <div class="alignleft font90">
-            <p><span class="code">metadata.json</span> contains the metadata for processing the CSV file</p>
+          </code></pre>
+          <div>
+            <p class="font70 example">Example of a CSV (tab-separated) file header pointing to its metadata document <span class="code">metadata.json</span></p>
           </div>
         </section><!-- 
                                 ###########################
@@ -231,7 +242,7 @@ Link: &lt;metadata.json&gt;; rel="describedBy"; type="application/csvm+json"
         <section class="future">
           <h3>Default locations</h3>
           <div class="alignleft font85">
-            <p>Considering the file <em><span class="code">http://example.org/africa/countries.csv</span></em>, the default locations are:</p>
+            <p>Considering a file <em><span class="code">http://example.org/list/countries.csv</span></em>, the metadata default locations can be find using:</p>
           </div>
           <div class="alignleft">
             <ul class="font80">
@@ -241,11 +252,11 @@ Link: &lt;metadata.json&gt;; rel="describedBy"; type="application/csvm+json"
             <ul class="font80">
               <li>Expand the file URI template with <em><span class="code">-metadata.json</span></em></li>
             </ul>
-            <pre><code style="padding-left:20px;" class="html">http://example.org/africa/countries.csv-metadata.json</code></pre>
+            <pre><code style="padding-left:20px;" class="html">http://example.org/list/countries.csv-metadata.json</code></pre>
             <ul class="font80">
               <li>Default metadata file name <em><span class="code">csv-metadata.json</span></em></li>
             </ul>
-            <pre><code style="padding-left:20px;" class="html">http://example.org/africa/csv-metadata.json</code></pre>
+            <pre><code style="padding-left:20px;" class="html">http://example.org/list/csv-metadata.json</code></pre>
           </div>
         </section><!-- 
                                 ###########################
@@ -262,7 +273,7 @@ Link: &lt;metadata.json&gt;; rel="describedBy"; type="application/csvm+json"
             <pre><code style="padding:0 0 0 20px;" class="html">
 # publisher ISO
 # updated 2012-04-19
-#name country latitude longitude name(en)
+#name country latitude longitude name
 #datatype string  float  float  string 
 AD      42.546245       1.601554        Andorra.
 AE      23.424076       53.847818       United Arab Emirates.
@@ -296,16 +307,15 @@ $ csvlint data.csv --schema:schema.json
         <section class="present">
           <h3>Metadata syntax</h3>
           <div class="alignleft font90">
-            <p>Syntax based on <em>JSON-LD</em> (with some restrictions <small><a href="https://w3c.github.io/csvw/publishing-snapshots/REC-metadata/Overview.html#json-ld-dialect" target="_blank">[3]</a></small>)</p>
-            <pre><code style="padding-left:20px;" class="json">
-{
+            <p>Syntax based on <em>JSON-LD</em> (with some restrictions <small><a href="https://w3c.github.io/csvw/publishing-snapshots/REC-metadata/Overview.html#json-ld-dialect" target="_blank">[ref]</a></small>)</p>
+            <pre><code style="padding-left:20px;" class="json">{
   "@context": ["http://www.w3.org/ns/csvw", {"@language": "en"}],
   "@type": "Table",
-  "url": "http://example.org/africa/countries.csv",
+  "url": "http://example.org/list/countries.csv",
   "dc:modified": {"@value": "2010-12-31", "@type": "xsd:date"},
-  "dcat:keyword": ["tree", "street", "maintenance"],
+  "dcat:keyword": ["country", "geolocation"],
   "dc:publisher": {
-    "schema:name": "Example Municipality",
+    "schema:name": "ISO",
     "schema:url": {"@id": "http://example.org"}
   },
   "tableSchema": {
@@ -323,22 +333,21 @@ $ csvlint data.csv --schema:schema.json
       "titles": "Longitude",
       "datatype": "float"
     }, {
-      "name": "name(en)",
-      "titles": "name",
+      "name": "name",
+      "titles": "English Name",
       "datatype": "string"
     }, {
-      "name": "inventory_date",
-      "titles": "Inventory Date",
+      "name": "nationalDay",
+      "titles": "national Day Date",
       "datatype": {
         "base": "date",
         "format": "M/d/yyyy"
       }
     }],
-    "primaryKey": "countryID",
+    "primaryKey": "country",
     "aboutUrl": "#Country-{country}"
   }
-}
-                                </code></pre>
+}</code></pre>
           </div><a href="#" class="navigate-down enabled">↧</a>
         </section><!-- 
                                 ###########################
@@ -348,7 +357,7 @@ $ csvlint data.csv --schema:schema.json
         <section class="future">
           <h3>Top-Level Properties</h3>
           <div class="alignleft font85">
-            <p>Considering the file <em><span class="code">http://example.org/africa/countries.csv</span></em> and its metadata document located <em><span class="code">http://example.org/africa/countries.csv-metadata.json</span></em></p>
+            <p>Considering a file <em><span class="code">http://example.org/list/countries.csv</span></em> and its metadata document located <em><span class="code">http://example.org/list/countries.csv-metadata.json</span></em></p>
           </div>
           <div class='column' style="float:right; width: 50%; height:100%;">
             <pre><code style="padding-left:10px; font-size:75%;" class="json">{
@@ -357,26 +366,26 @@ $ csvlint data.csv --schema:schema.json
       "@language": "en", 
       "@base": "http://example.org/myNamespace/"
     }],
-  "url": "http://example.org/africa/countries.csv",
+  "url": "http://example.org/list/countries.csv",
   ...
   }</code></pre>
           </div>
-          <div class='column' style="float:left; width: 50%; height:100%;">
+          <div class='column fragment' style="float:left; width: 50%; height:100%;">
             <ul class="font70">
               <li>
                 <em><span class="code">@context</span></em> must contain <span class="code">"http://www.w3.org/ns/csvw"</span>
                 <ul>
-                  <li><em><span class="code">@language</span></em> (Optional) defines the default language for string type/untyped values in the CSV table.</li>
-                  <li><em><span class="code">@base</span></em> provides the base URL against which other URLs within the metadata file are resolved.</li>
+                  <li><em><span class="code">@language</span></em> (Optional) defines the default language for string values in the CSV table</li>
+                  <li><em><span class="code">@base</span></em> provides the base URL against which other URLs within the metadata file are resolved</li>
                 </ul>
               </li>
             </ul>
           </div>
-          <div class='clear alignleft'>
+          <div class='clear alignleft fragment'>
             <ul class="font70">
               <li><em><span class="code">@url</span></em> gives the single URL of the CSV file described by this metadata document.</li>
             </ul>
-            <p class="font70 info">Other properties include: <span class="code">tableDirection, @id, @type</span> and additional metadata such as dc:description, dc:modified, etc.</p>
+            <p class="font70 info">Other useful properties: <span class="code">tableDirection, @id, @type, dc:description, dc:modified</span> etc.</p>
           </div>
         </section><!-- 
                                 ###########################
@@ -385,7 +394,7 @@ $ csvlint data.csv --schema:schema.json
                                 -->
         <section class="future">
           <h3>Table Schema</h3>
-          <div class='column' style="float:right; width: 50%; height:100%;">
+          <div class='column' style="float:right; width: 42%; height:100%;">
             <pre><code style="padding-left:10px; font-size:75%;" class="json">{ ...
   "tableSchema": {
     "columns": [{
@@ -406,49 +415,74 @@ $ csvlint data.csv --schema:schema.json
   }
 }</code></pre>
           </div>
-          <div class='column' style="float:left; width: 50%; height:100%;">
+          <div class='column' style="float:left; width: 58%; height:100%;">
             <ul class="font70">
-              <li>
-                <em><span class="code">columns</span></em> is an array of columns for which <em><span class="code">name</span></em> must be unique
+              <li class="fragment">
+                <em><span class="code">columns</span></em> is an ordered array of columns (matching the ones in CSV) for which <em><span class="code">name</span></em> must be unique
                 <ul>
-                  <li><em><span class="code">name</span></em> gives a single canonical name for the column used later as property</li>
+                  <li><em><span class="code">name</span></em> gives a single canonical name for the column used later as a property</li>
                   <li><em><span class="code">titles</span></em> provide possible alternative names for the column</li>
                   <li><em><span class="code">datatype</span></em> specifies the datatype of the values contained in that column</li>
                   <li><em><span class="code">required</span></em> whether the cell value can be null</li>
                 </ul>
               </li>
-              <li><em><span class="code">primaryKey</span></em>. The value of this property (with reference to column names) becomes the primary key annotation for each row within a table</li>
+              <li class="fragment"><em><span class="code">primaryKey</span></em>. The value of this property (with reference to column names) becomes the primary key annotation for each row within a table</li>
             </ul>
           </div>
-          <div class='clear alignleft'>
+          <div class='fragment clear alignleft'>
             <ul class="font70">
-              <li><em><span class="code">aboutURL</span></em>. A URI template property that may be used to indicate what a cell (or row depends on where it is placed) contains information about</li>
+              <li><em><span class="code">aboutURL</span></em>. A URI template property that may be used to indicate what a row of cells (or a single cell depending on where it is placed) contains information about (URI)</li>
             </ul>
           </div>
         </section><!-- 
                                 ###########################
-                                       Common Cases
+                                       Useful patterns
                                 ########################### 
                                 -->
         <section class="future">
-          <h3>Common cases</h3>
+          <h3>Useful patterns</h3>
           <table class="font80">
-          <tr>
-          	<td class="font70" style="width:23%">Language tag</td><td><pre><code style="padding-left:10px;" class="json">{"name":"prénom", "lang": "fr"}</code></pre></td>
-          	</tr><tr>
-          	<td class="font70">URL from value</td><td><pre><code style="padding-left:10px;" class="json">{"name": "homepage", "valueUrl": "{+homepage}"}</code></pre></td>
-          	</tr><tr>
-          	<td class="font70">Specific property</td><td><pre><code style="padding-left:10px;" class="json">{"name": "type", "propertyUrl": "rdf:type", "valueUrl": "{+type}"}</code></pre></td>
-          	</tr><tr>
-          	<td class="font70">Virtual column</td><td><pre><code style="padding-left:10px;" class="json">{"name": "name","virtual": true,"propertyUrl": "foaf:name",
-"valueUrl":"{firstname} {lastname}"}</code></pre></td>
-          	</tr><tr>
-          	<td class="font70">Foreign key</td><td><pre><code style="padding-left:10px;" class="json">{"foreignKeys": [{"columnReference": "countryRef","reference": 
-{"resource": "http://example.org/countries.csv","columnReference": "countryCode"}}]}</code></pre></td>
-</tr><tr>
-          	<td class="font70">value Constraints</td><td><pre><code style="padding-left:10px;" class="json">{"datatype": {"base": "integer",  "minimum": 1, "maximum": 10},
-"default": "5", "null": "0", "separator": " "}</code></pre><pre><code style="padding-left:10px;" class="json">{"datatype": "date","format": dd/MM/yyyy","minExclusive": "2000-01-01"}</code></pre><pre><code style="padding-left:10px;" class="json">{"datatype": "string","maxLength": "256"}</code></pre></td>
-          </tr>
+            <tr>
+              <td class="font70" style="width:23%">Language tag</td>
+              <td>
+                <pre><code style="padding-left:10px;" class="json">{"name":"prénom", "lang": "fr"}</code></pre>
+              </td>
+            </tr>
+            <tr>
+              <td class="font70">URL from value</td>
+              <td>
+                <pre><code style="padding-left:10px;" class="json">{"name": "homepage", "valueUrl": "{+homepage}"}</code></pre>
+              </td>
+            </tr>
+            <tr>
+              <td class="font70">Specific property</td>
+              <td>
+                <pre><code style="padding-left:10px;" class="json">{"name": "type", "propertyUrl": "rdf:type", "valueUrl": "{+type}"}</code></pre>
+              </td>
+            </tr>
+            <tr>
+              <td class="font70">Virtual column</td>
+              <td>
+                <pre><code style="padding-left:10px;" class="json">{"name": "name","virtual": true,"propertyUrl": "foaf:name",
+"valueUrl":"{firstname} {lastname}"}</code></pre>
+              </td>
+            </tr>
+            <tr>
+              <td class="font70">Foreign key</td>
+              <td>
+                <pre><code style="padding-left:10px;" class="json">{"foreignKeys": [{"columnReference": "countryRef","reference": 
+{"resource": "http://example.org/countries.csv","columnReference": "countryCode"}}]}</code></pre>
+              </td>
+            </tr>
+            <tr>
+              <td class="font70">Value Constraints</td>
+              <td>
+                <pre><code style="padding-left:10px;" class="json">{"datatype": {"base": "integer",  "minimum": 1, "maximum": 10},
+"default": "5", "null": "0", "separator": " "}</code></pre>
+                <pre><code style="padding-left:10px;" class="json">{"datatype": "date","format": dd/MM/yyyy","minExclusive": "2000-01-01"}</code></pre>
+                <pre><code style="padding-left:10px;" class="json">{"datatype": "string","maxLength": "256"}</code></pre>
+              </td>
+            </tr>
           </table>
         </section>
       </section><!-- 
@@ -462,54 +496,36 @@ $ csvlint data.csv --schema:schema.json
           <table>
             <tr>
               <th></th>
-              <th>Lang</th>
-              <th>Author</th>
-              <th>Parsing/ Validation</th>
-              <th>to JSON</th>
-              <th>to RDF</th>
+              <th>Lang</th><th>Author</th><th>Parsing/ Validation</th><th>to JSON</th><th>to RDF</th>
             </tr>
             <tr>
               <td>
                 <a href="https://github.com/theodi/csvlint.rb" target="_blank">csvlint</a>
               </td>
-              <td class="font70">Ruby</td>
-              <td class="font70">ODI</td>
-              <td class="font70">Yes</td>
-              <td class="font70">Yes</td>
-              <td class="font70">Yes</td>
+              <td class="font70">Ruby</td><td class="font70">ODI</td><td class="font70">Yes</td><td class="font70">Yes</td><td class="font70">Yes</td>
             </tr>
             <tr>
               <td>
                 <a href="https://github.com/sebneu/csvw-parser" target="_blank">pycsvw</a>
               </td>
-              <td class="font70">Python</td>
-              <td class="font70">Sebastien Neumaier</td>
-              <td class="font70">Partially</td>
-              <td></td>
-              <td></td>
+              <td class="font70">Python</td><td class="font70">Sebastien Neumaier</td><td class="font70">Partially</td><td></td><td></td>
             </tr>
             <tr>
               <td>
                 <a href="https://github.com/davideceolin/rcsvw" target="_blank">rcsvw</a>
               </td>
-              <td class="font70">R</td>
-              <td class="font70">Davide Ceolin</td>
-              <td></td>
-              <td class="font70">partially</td>
-              <td></td>
+              <td class="font70">R</td><td class="font70">Davide Ceolin</td><td></td><td class="font70">partially</td><td></td>
             </tr>
             <tr>
               <td>
                 <a href="http://ruby-rdf.github.com/rdf-tabular" target="_blank">RDF::Tabular</a>
               </td>
-              <td class="font70">Ruby</td>
-              <td class="font70">Gragg Kellogg</td>
-              <td class="font70">Yes</td>
-              <td class="font70">Yes</td>
-              <td class="font70">Yes</td>
+              <td class="font70">Ruby</td><td class="font70">Gregg Kellogg</td><td class="font70">Yes</td><td class="font70">Yes</td><td class="font70">Yes</td>
             </tr>
           </table>
         </div>
+        <h3 style="margin-top:1em;">Examples</h3>
+        <div class="alignleft font90">Find plenty of examples on <a href="https://github.com/w3c/csvw/tree/gh-pages/examples", target="_blank">csvw github repository</a></div>
       </section><!-- 
                                 ###########################
                                        References
@@ -517,10 +533,10 @@ $ csvlint data.csv --schema:schema.json
                                 -->
       <section>
         <h2>References</h2>
-        <div class="alignleft font90">
-          <p>https://www.w3.org/2013/05/lcsv-charter</p>
-          <p>https://www.w3.org/2013/csvw/wiki/Main_Page</p>
-          <p>https://www.w3.org/TR/2015/REC-tabular-data-model-20151217/</p>
+        <div class="alignleft font80">
+          <p><a href="https://www.w3.org/2013/csvw/wiki/Main_Page" target="_blank">https://www.w3.org/2013/csvw/wiki/Main_Page</a> CSVW Working Group Wiki pointing to all recommendations, tools, etc.</p>
+          <p><a href="https://github.com/w3c/csvw" target="_blank">https://github.com/w3c/csvw</a> Github repo. with examples, tool tests</p>
+          <p>Gregg Kellogg blog post on <a href="http://greggkellogg.net/2015/04/implementing-csv-on-the-web/" target="_blank">"Implementing CSV on the Web"</a> with hands on example using the <a href="http://ruby-rdf.github.com/rdf-tabular" target="_blank">RDF::Tabular</a> tool</p>
         </div>
       </section>
     </div>
